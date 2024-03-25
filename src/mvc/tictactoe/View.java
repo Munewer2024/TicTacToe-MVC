@@ -1,5 +1,6 @@
 package mvc.tictactoe;
 import com.mrjaffesclass.apcs.messenger.*;
+import javax.swing.JButton;
 /**
  * MVC Template
  * This is a template of an MVC framework used by APCS for the 
@@ -27,23 +28,34 @@ public class View extends javax.swing.JFrame implements MessageHandler {
    */
   public void init() {
     // Subscribe to messages here
-    mvcMessaging.subscribe("model:variable1Changed", this);
-    mvcMessaging.subscribe("model:variable2Changed", this);
+    this.mvcMessaging.subscribe("boardChange", this);
+    this.mvcMessaging.subscribe("gameOver", this);
   }
   
-  @Override
+@Override
   public void messageHandler(String messageName, Object messagePayload) {
     if (messagePayload != null) {
       System.out.println("MSG: received by view: "+messageName+" | "+messagePayload.toString());
     } else {
       System.out.println("MSG: received by view: "+messageName+" | No data sent");
     }
-    if (messageName.equals("model:variable1Changed")) {
-      jLabel8.setText(messagePayload.toString());
-    } else {
-      jLabel10.setText(messagePayload.toString());      
+    if (messageName.equals("boardChange")) {
+      // Get the message payload and cast it as a 2D string array since we
+      // know that the model is sending out the board data with the message
+      String[][] board = (String[][])messagePayload;
+      // Now set the button text with the contents of the board
+      jButton1.setText(board[0][0]);
+      jButton2.setText(board[0][1]);
+      jButton3.setText(board[0][2]);
+      jButton4.setText(board[1][0]);
+      jButton5.setText(board[1][1]);
+      jButton6.setText(board[1][2]);
+      jButton7.setText(board[2][0]);
+      jButton8.setText(board[2][1]);
+      jButton9.setText(board[2][2]);
     }
   }
+
 
   /**
    * Instantiate an object with the field number that was clicked (1 or 2) and
@@ -52,10 +64,6 @@ public class View extends javax.swing.JFrame implements MessageHandler {
    * @param direction this.UP (1) or this.DOWN (-1), constants defined above
    * @return the HashMap payload to be sent with the message
    */
-  private MessagePayload createPayload(int fieldNumber, int direction) {
-    MessagePayload payload = new MessagePayload(fieldNumber, direction);
-    return payload;
-  }
 
   /**
    * This method is called from within the constructor to initialize the form.
@@ -88,40 +96,65 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         jButton1.setText("00");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                onClick(evt);
             }
         });
 
         jButton2.setText("01");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onClick(evt);
+            }
+        });
 
         jButton3.setText("02");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                onClick(evt);
             }
         });
 
         jButton4.setText("10");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                onClick(evt);
             }
         });
 
         jButton5.setText("11");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                onClick(evt);
             }
         });
 
         jButton6.setText("12");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onClick(evt);
+            }
+        });
 
         jButton7.setText("20");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onClick(evt);
+            }
+        });
 
         jButton8.setText("21");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onClick(evt);
+            }
+        });
 
         jButton9.setText("22");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onClick(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         jLabel1.setText("O's Turn   |");
@@ -191,21 +224,10 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void onClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onClick
+    JButton button = (JButton)evt.getSource();
+    this.mvcMessaging.notify("playerMove", button.getName());
+    }//GEN-LAST:event_onClick
 
   /**
    * @param args the command line arguments
