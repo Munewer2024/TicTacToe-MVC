@@ -29,6 +29,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
   public void init() {
     // Subscribe to messages here
     this.mvcMessaging.subscribe("boardChange", this);
+    this.mvcMessaging.subscribe("whoseTurn", this);
     this.mvcMessaging.subscribe("gameOver", this);
   }
   
@@ -53,6 +54,14 @@ public class View extends javax.swing.JFrame implements MessageHandler {
       jButton7.setText(board[2][0]);
       jButton8.setText(board[2][1]);
       jButton9.setText(board[2][2]);
+    } else if (messageName.equals("whoseTurn")) {
+        boolean whoseTurn = (boolean)messagePayload;
+        
+        if (whoseTurn) {
+            jLabel1.setText("X's Turn");
+        } else {
+            jLabel1.setText("O's Turn");
+        }
     }
   }
 
@@ -94,6 +103,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         jLabel12.setToolTipText("");
 
         jButton1.setText("00");
+        jButton1.setName("00"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -101,6 +111,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton2.setText("01");
+        jButton2.setName("01"); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -108,6 +119,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton3.setText("02");
+        jButton3.setName("02"); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -115,6 +127,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton4.setText("10");
+        jButton4.setName("10"); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -122,6 +135,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton5.setText("11");
+        jButton5.setName("11"); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -129,6 +143,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton6.setText("12");
+        jButton6.setName("12"); // NOI18N
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -136,6 +151,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton7.setText("20");
+        jButton7.setName("20"); // NOI18N
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -143,6 +159,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton8.setText("21");
+        jButton8.setName("21"); // NOI18N
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);
@@ -150,6 +167,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton9.setText("22");
+        jButton9.setName("22"); // NOI18N
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onClick(evt);

@@ -62,8 +62,8 @@ public class Model implements MessageHandler {
     if (messageName.equals("playerMove")) {
       // Get the position string and convert to row and col
       String position = (String)messagePayload;
-      Integer row = Integer.parseInt(position.substring(0,1));
-      Integer col = Integer.parseInt(position.substring(1,2));
+      Integer row = new Integer(position.substring(0,1));
+      Integer col = new Integer(position.substring(1,2));
       // If square is blank...
       if (this.board[row][col].equals("")) {
         // ... then set X or O depending on whose move it is
@@ -72,6 +72,9 @@ public class Model implements MessageHandler {
         } else {
           this.board[row][col] = "O";
         }
+        
+        this.whoseMove = !this.whoseMove;
+        this.mvcMessaging.notify("whoseTurn", this.whoseMove);
         // Send the boardChange message along with the new board 
         this.mvcMessaging.notify("boardChange", this.board);
       }
