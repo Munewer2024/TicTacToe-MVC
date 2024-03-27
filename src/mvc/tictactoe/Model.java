@@ -49,6 +49,43 @@ public class Model implements MessageHandler {
     this.gameOver = false;
   }
   
+   private String isWinner() {
+        // Check the rows and columns for a tic tac toe
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0].equals(board[i][1]) && board[i][0].equals(board[i][2]) && !board[i][0].equals("")) {
+                return board[i][0];
+            }
+            if (board[0][i].equals(board[1][i]) && board[0][i].equals(board[2][i]) && !board[0][i].equals("")) {
+                return board[0][i];
+            }
+        }
+        
+        
+        // Check the diagonals
+        if (board[0][0].equals(board[1][1]) && board[0][0].equals(board[2][2]) && !board[0][0].equals("")) {
+            return board[0][0];
+        }
+        if (board[0][2].equals(board[1][1]) && board[0][2].equals(board[2][0]) && !board[0][2].equals("")) {
+            return board[0][2];
+        }
+        
+        // If we haven't found it, then return a blank string
+        return "";
+
+    }
+  
+   
+   private boolean isTie() {
+    for (int i = 0; i < 3; i++) {
+        for (int k = 0; k < 3; k++) {
+            if (board[i][k].equals("")) {
+                return false;
+            }
+        }
+    }
+    return true;
+   }
+   
   @Override
   public void messageHandler(String messageName, Object messagePayload) {
     // Display the message to the console for debugging
@@ -65,7 +102,7 @@ public class Model implements MessageHandler {
       Integer row = new Integer(position.substring(0,1));
       Integer col = new Integer(position.substring(1,2));
       // If square is blank...
-      if (this.board[row][col].equals("")) {
+      if (this.board[row][col].equals("") && !this.gameOver) {
         // ... then set X or O depending on whose move it is
         if (this.whoseMove) {
           this.board[row][col] = "X";
@@ -73,10 +110,20 @@ public class Model implements MessageHandler {
           this.board[row][col] = "O";
         }
         
-        this.whoseMove = !this.whoseMove;
-        this.mvcMessaging.notify("whoseTurn", this.whoseMove);
+        String winner = this.isWinner();
+        boolean tie = this.isTie();
+        if (!winner.equals("")) {
+            this.mvcMessaging.notify("gameOver", winner + " WON THE GAME!");
+            this.gameOver = true;
+        } else if (tie) {
+            this.mvcMessaging.notify("gameOver", "TIE GAME!");
+            this.gameOver = true;
+        }
         // Send the boardChange message along with the new board 
         this.mvcMessaging.notify("boardChange", this.board);
+        
+        this.whoseMove = !this.whoseMove;
+        this.mvcMessaging.notify("whoseTurn", this.whoseMove);
       }
       
     // newGame message handler
